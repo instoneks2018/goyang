@@ -1457,8 +1457,9 @@ type sortedErrors []sError
 func (s sortedErrors) Len() int      { return len(s) }
 func (s sortedErrors) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 func (s sortedErrors) Less(i, j int) bool {
-	fi := strings.SplitN(s[i].s, ":", 4)
-	fj := strings.SplitN(s[j].s, ":", 4)
+	const sErrorSplitCounts = 4
+	fi := strings.SplitN(s[i].s, ":", sErrorSplitCounts)
+	fj := strings.SplitN(s[j].s, ":", sErrorSplitCounts)
 	if fi[0] < fj[0] {
 		return true
 	}
@@ -1477,10 +1478,10 @@ func (s sortedErrors) Less(i, j int) bool {
 		case len(fj) < x && len(fi) < x:
 			return 0
 		}
-		return nless(fi[x], fj[x])
+		return nless(fi[x-1], fj[x-1])
 	}
-	for x := 1; x < 4; x++ {
-		switch compare(1) {
+	for x := 1; x < sErrorSplitCounts; x++ {
+		switch compare(x) {
 		case -1:
 			return true
 		case 1:

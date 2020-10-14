@@ -16,6 +16,7 @@ package yang
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"math"
@@ -3341,5 +3342,17 @@ func TestLeafEntryTypes(t *testing.T) {
 			}
 			tt.wantEntryCustomTest(t, e)
 		})
+	}
+}
+
+func TestLess(t *testing.T) {
+	var sErrs sortedErrors = []sError{
+		{"100", errors.New("test error0")},
+		{"100", errors.New("test error1")},
+	}
+
+	ret := sErrs.Less(0, 1)
+	if ret == true {
+		t.Errorf("incorrect less comparison")
 	}
 }
